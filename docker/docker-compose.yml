@@ -1,0 +1,30 @@
+services:
+  app-dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: dev
+    image: style-transfer-streamlit:dev
+    ports:
+      - "8501:8501"
+    volumes:
+      - ..:/style_transfer
+    profiles:
+      - dev
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_PORT=8501
+
+  app-prod:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: prod
+    image: style-transfer-streamlit:prod
+    ports:
+      - "8501:8501"
+    profiles:
+      - prod
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_PORT=8501
