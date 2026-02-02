@@ -16,7 +16,6 @@ jobs:
       - name: Run linters and tests
         run: |
           make final_check
-
   build_and_push:
     needs: ci
     runs-on: ubuntu-latest
