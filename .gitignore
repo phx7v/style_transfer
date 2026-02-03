@@ -18,11 +18,6 @@ env/
 # Jupyter / IPython
 .ipynb_checkpoints/
 
-## PyTorch / ML weights (если не хотите хранить в репо)
-#weights/
-#*.pt
-#*.pth
-
 # Streamlit
 .streamlit/
 

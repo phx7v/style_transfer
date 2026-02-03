@@ -2,7 +2,6 @@ from io import BytesIO
 
 import onnxruntime as ort
 import streamlit as st
-import torch
 from PIL import Image
 
 from inference.postprocessing import numpy_to_pil
@@ -10,15 +9,15 @@ from inference.preprocessing import preprocess_image_onnx
 
 
 @st.cache_resource
-def get_model(model_path: str) -> torch.nn.Module:
-    model = ort.InferenceSession(model_path, providers=['CPUExecutionProvider'])
-    return model
+def get_session(model_path: str) -> ort.InferenceSession:
+    session = ort.InferenceSession(model_path, providers=['CPUExecutionProvider'])
+    return session
 
 
 def main() -> None:
     st.title('Style Transfer: Van Gogh')
 
-    model = get_model('models/onnx/transformnet_vg.onnx')
+    model = get_session('models/onnx/transformnet_vg.onnx')
 
     option = st.radio('Choose image source', ('Upload image', 'Take photo'))
 

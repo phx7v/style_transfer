@@ -10,6 +10,7 @@ The project is fully containerized with **Docker** and supports separate **devel
 ### Runtime
 - Python 3.11
 - Streamlit
+- Onnx
 - PyTorch, torchvision
 - Numpy
 
@@ -116,6 +117,10 @@ To remove dependency from dev - please specify PKG - package name (required).
 ```bash
 make poetry_remove_dev PKG=<name>
 ```
+
+### Models
+
+To export models to onnx model - [export_to_onnx.py](tools/export_to_onnx.py) can be used.
 
 ### Production
 
