@@ -1,19 +1,16 @@
-import torch
-from PIL import Image
-
-from style_transfer.inference.preprocessing import preprocess_image
+import numpy as np
+from style_transfer.inference.preprocessing import preprocess_image_onnx
 
 
-def test_preprocess_image_shape_and_range():
-    img = Image.new('RGB', (257, 259))
-    device = torch.device('cpu')
+def test_preprocess_image_onnx_shape_and_range(dummy_image):
+    x = preprocess_image_onnx(dummy_image)
 
-    x = preprocess_image(img, device)
+    assert isinstance(x, np.ndarray)
+    assert x.shape[0] == 1  # batch
+    assert x.shape[1] == 3  # channels
+    assert x.shape[2] % 8 == 0  # H padded to multiple of 8
+    assert x.shape[3] % 8 == 0  # W padded to multiple of 8
 
-    assert isinstance(x, torch.Tensor)
-    assert x.shape[0] == 1
-    assert x.shape[1] == 3
-    assert x.shape[2] % 8 == 0
-    assert x.shape[3] % 8 == 0
     assert x.min() >= -1
     assert x.max() <= 1
+

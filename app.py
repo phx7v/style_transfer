@@ -1,25 +1,24 @@
 from io import BytesIO
 
+import onnxruntime as ort
 import streamlit as st
 import torch
 from PIL import Image
 
-from inference.loader import load_model
-from inference.postprocessing import tensor_to_pil
-from inference.preprocessing import preprocess_image
+from inference.postprocessing import numpy_to_pil
+from inference.preprocessing import preprocess_image_onnx
 
 
 @st.cache_resource
-def get_model() -> tuple[torch.nn.Module, torch.device]:
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = load_model('weights/vg7.pt', device)
-    return model, device
+def get_model(model_path: str) -> torch.nn.Module:
+    model = ort.InferenceSession(model_path, providers=['CPUExecutionProvider'])
+    return model
 
 
 def main() -> None:
     st.title('Style Transfer: Van Gogh')
 
-    model, device = get_model()
+    model = get_model('models/onnx/transformnet_vg.onnx')
 
     option = st.radio('Choose image source', ('Upload image', 'Take photo'))
 
@@ -35,12 +34,11 @@ def main() -> None:
     content_img = Image.open(content_file).convert('RGB')
     st.image(content_img, caption='Content Image', width='content')
 
-    content = preprocess_image(content_img, device)
+    content = preprocess_image_onnx(content_img)
 
-    with torch.no_grad():
-        output = model(content)
+    output = model.run(None, {'input': content})
 
-    output_img = tensor_to_pil(output)
+    output_img = numpy_to_pil(output[0])
     st.image(output_img, caption='Stylized Image', width='content')
 
     buf = BytesIO()

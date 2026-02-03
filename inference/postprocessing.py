@@ -1,10 +1,18 @@
 import numpy as np
-import torch
 from PIL import Image
 
 
-def tensor_to_pil(tensor: torch.Tensor) -> Image.Image:
-    tensor = (tensor + 1) / 2
-    img = tensor.squeeze().cpu().permute(1, 2, 0).clamp(0, 1).numpy()
-    img = (img * 255).astype(np.uint8)
-    return Image.fromarray(img)
+def numpy_to_pil(x: np.ndarray) -> Image.Image:
+    # remove batch dimension
+    x = x[0]  # [3, H, W]
+
+    # CHW -> HWC
+    x = x.transpose(1, 2, 0)  # [H, W, 3]
+
+    # [-1, 1] -> [0, 1]
+    x = (x + 1) / 2
+
+    x = np.clip(x, 0, 1)
+    x = (x * 255).astype(np.uint8)
+
+    return Image.fromarray(x)

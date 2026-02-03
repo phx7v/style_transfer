@@ -1,19 +1,22 @@
-import torch
 import numpy as np
 from PIL import Image
+import pytest
 
-from style_transfer.inference.postprocessing import tensor_to_pil
+from style_transfer.inference.preprocessing import preprocess_image_onnx
+from style_transfer.inference.postprocessing import numpy_to_pil
 
 
-def test_tensor_to_pil_output():
-    tensor = torch.rand(1, 3, 64, 64) * 2 - 1
+def test_numpy_to_pil_output(dummy_image):
+    x = preprocess_image_onnx(dummy_image)
 
-    img = tensor_to_pil(tensor)
+    img = numpy_to_pil(x)
 
     assert isinstance(img, Image.Image)
     assert img.mode == 'RGB'
-    assert img.size == (64, 64)
+    assert img.size[0] == x.shape[3]  # w
+    assert img.size[1] == x.shape[2]  # h
 
     np_img = np.array(img)
     assert np_img.min() >= 0
     assert np_img.max() <= 255
+    assert np_img.dtype == np.uint8
