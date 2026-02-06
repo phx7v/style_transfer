@@ -1,6 +1,6 @@
 import torch
 
-from style_transfer.model import TransformNet
+from style_transfer.models.model import TransformNet
 
 
 def test_transform_net_forward_shape():

@@ -9,6 +9,9 @@ __pycache__/
 *.pyd
 *.log
 
+# Weights for initial TransformNet model, but we use onnx now
+models/weights
+
 # Virtual environments
 venv/
 .venv/
@@ -17,11 +20,6 @@ env/
 
 # Jupyter / IPython
 .ipynb_checkpoints/
-
-## PyTorch / ML weights (если не хотите хранить в репо)
-#weights/
-#*.pt
-#*.pth
 
 # Streamlit
 .streamlit/

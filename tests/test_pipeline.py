@@ -1,28 +1,45 @@
 import torch
+import onnx
+import onnxruntime as ort
 import numpy as np
-from PIL import Image
-
-from style_transfer.inference.postprocessing import tensor_to_pil
-from style_transfer.inference.preprocessing import preprocess_image
-from style_transfer.model import TransformNet
+from style_transfer.models.model import TransformNet
+from style_transfer.inference.postprocessing import numpy_to_pil
+from style_transfer.inference.preprocessing import preprocess_image_onnx
 
 
-def test_full_inference_pipeline():
+def test_full_pipeline(dummy_weights, dummy_onnx_path, dummy_image):
+    # PyTorch -> ONNX
     model = TransformNet()
-    img = Image.new('RGB', (128, 128))
+    state = torch.load(dummy_weights)
+    model.load_state_dict(state)
+    model.eval()
 
-    x = preprocess_image(img, torch.device('cpu'))
+    dummy_input = torch.randn(1, 3, 128, 128)
+    torch.onnx.export(
+        model,
+        dummy_input,
+        str(dummy_onnx_path),
+        opset_version=15,
+        input_names=['input'],
+        output_names=['output'],
+        dynamic_axes={'input': {2: 'H', 3: 'W'}, 'output': {2: 'H', 3: 'W'}},
+    )
 
-    with torch.no_grad():
-        y = model(x)
+    onnx_model = onnx.load(str(dummy_onnx_path))
+    onnx.checker.check_model(onnx_model)
 
-    out = tensor_to_pil(y)
+    x = preprocess_image_onnx(dummy_image)
 
-    assert isinstance(out, Image.Image)
-    assert out.size == (128, 128)
-    assert out.mode == 'RGB'
+    # ONNX inference
+    sess = ort.InferenceSession(str(dummy_onnx_path))
+    outputs = sess.run(None, {'input': x})
+    y = outputs[0]
 
-    np_out = np.array(out)
+    out_img = numpy_to_pil(y)
+
+    assert out_img.size == (128, 128)
+    assert out_img.mode == 'RGB'
+    np_out = np.array(out_img)
     assert np_out.min() >= 0
     assert np_out.max() <= 255
     assert np_out.dtype == np.uint8
