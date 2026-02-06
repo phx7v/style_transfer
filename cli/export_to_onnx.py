@@ -4,7 +4,7 @@ from tools.export_to_onnx import export_to_onnx
 from tools.model_loader import load_model
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', required=True)
     parser.add_argument('--onnx', required=True)

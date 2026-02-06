@@ -1,7 +1,7 @@
 from io import BytesIO
+from pathlib import Path
 
 import onnxruntime as ort
-from pathlib import Path
 import streamlit as st
 from PIL import Image
 
@@ -18,9 +18,9 @@ def get_session(model_path: str) -> ort.InferenceSession:
 def main() -> None:
     st.title('Style Transfer')
 
-    WEIGHTS_DIR = Path('models/onnx')
+    weights_dir = Path('models/onnx')
 
-    models = {p.stem.replace('transformnet_', '').title(): p for p in WEIGHTS_DIR.glob('*.onnx')}
+    models = {p.stem.replace('transformnet_', '').title(): p for p in weights_dir.glob('*.onnx')}
 
     selected_model_name = st.selectbox('Choose style', options=sorted(models.keys()))
 
