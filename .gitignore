@@ -9,6 +9,9 @@ __pycache__/
 *.pyd
 *.log
 
+# Weights for initial TransformNet model, but we use onnx now
+models/weights
+
 # Virtual environments
 venv/
 .venv/

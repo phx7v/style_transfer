@@ -120,7 +120,11 @@ make poetry_remove_dev PKG=<name>
 
 ### Models
 
-To export models to onnx model - [export_to_onnx.py](tools/export_to_onnx.py) can be used.
+To export models to onnx model.
+
+```bash
+make export_to_onnx WEIGHTS=<weights_path> ONNX=<onnx_path>
+```
 
 ### Production
 

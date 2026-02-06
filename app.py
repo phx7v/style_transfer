@@ -1,6 +1,7 @@
 from io import BytesIO
 
 import onnxruntime as ort
+from pathlib import Path
 import streamlit as st
 from PIL import Image
 
@@ -15,9 +16,15 @@ def get_session(model_path: str) -> ort.InferenceSession:
 
 
 def main() -> None:
-    st.title('Style Transfer: Van Gogh')
+    st.title('Style Transfer')
 
-    model = get_session('models/onnx/transformnet_vg.onnx')
+    WEIGHTS_DIR = Path('models/onnx')
+
+    models = {p.stem.replace('transformnet_', '').title(): p for p in WEIGHTS_DIR.glob('*.onnx')}
+
+    selected_model_name = st.selectbox('Choose style', options=sorted(models.keys()))
+
+    model = get_session(models[selected_model_name])
 
     option = st.radio('Choose image source', ('Upload image', 'Take photo'))
 

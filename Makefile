@@ -79,3 +79,11 @@ poetry_remove_dev:
 		exit 1; \
 	fi
 	$(COMPOSE_RUN_DEV) poetry remove --dev $(PKG)
+
+export_to_onnx:
+	@if [ -z '$(WEIGHTS)' ] || [ -z '$(ONNX)' ]; then \
+		echo 'Error: WEIGHTS and ONNX must be set.'; \
+		echo 'Usage: make export_to_onnx WEIGHTS=<weights_path> ONNX=<onnx_path>'; \
+		exit 1; \
+	fi
+	$(COMPOSE_RUN_DEV) 	python -m cli.export_to_onnx --weights $(WEIGHTS) --onnx $(ONNX)
