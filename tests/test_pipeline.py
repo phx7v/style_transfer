@@ -19,7 +19,7 @@ def test_full_pipeline(dummy_weights, dummy_onnx_path, dummy_image):
         model,
         dummy_input,
         str(dummy_onnx_path),
-        opset_version=17,
+        opset_version=15,
         input_names=['input'],
         output_names=['output'],
         dynamic_axes={'input': {2: 'H', 3: 'W'}, 'output': {2: 'H', 3: 'W'}},
