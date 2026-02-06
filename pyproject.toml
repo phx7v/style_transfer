@@ -57,8 +57,8 @@ torch = "^2.1"
 pillow = "^10.2"
 torchvision = "^0.16"
 numpy = "^1.26"
-onnx = "1.15.0"
-onnxruntime = "1.16.3"
+onnx = "1.16.2"
+onnxruntime = "1.19.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3"

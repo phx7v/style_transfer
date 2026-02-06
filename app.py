@@ -1,6 +1,5 @@
 from io import BytesIO
 from pathlib import Path
-from typing import Optional
 
 import onnxruntime as ort
 import streamlit as st
@@ -8,7 +7,6 @@ from PIL import Image
 
 from inference.postprocessing import numpy_to_pil
 from inference.preprocessing import preprocess_image_onnx, resize_to_max_pixels
-
 
 MAX_PIXELS = 3_000_000
 WEIGHTS_DIR = Path('models/onnx')
@@ -55,13 +53,13 @@ def load_image_from_input() -> Image.Image:
     return content_image
 
 
-def validate_and_resize_image(content_image: Image.Image) -> Optional[Image.Image]:
+def validate_and_resize_image(content_image: Image.Image) -> Image.Image | None:
     w, h = content_image.size
     if w * h <= MAX_PIXELS:
         return content_image
 
     st.error(
-        f'Image too large: {w}×{h}. Max allowed: {MAX_PIXELS / 1e6:.1f} MP.'
+        f'Image too large: {w} x {h}. Max allowed: {MAX_PIXELS / 1e6:.1f} MP.'
     )
 
     if st.button('Resize image'):
