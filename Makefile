@@ -57,14 +57,14 @@ poetry_add_prod:
 		echo 'Error: PKG is not set. Usage: make poetry_add_prod PKG=<name> [VER=<version>]'; \
 		exit 1; \
 	fi
-	$(COMPOSE_RUN_DEV) poetry add $(PKG)$(VER)
+	$(COMPOSE_RUN_DEV) poetry add $(PKG)==$(VER)
 
 poetry_add_dev:
 	@if [ -z '$(PKG)' ]; then \
 		echo 'Error: PKG is not set. Usage: make poetry_add_dev PKG=<name> [VER=<version>]'; \
 		exit 1; \
 	fi
-	$(COMPOSE_RUN_DEV) poetry add --dev $(PKG)$(VER)
+	$(COMPOSE_RUN_DEV) poetry add --dev $(PKG)==$(VER)
 
 poetry_remove_prod:
 	@if [ -z '$(PKG)' ]; then \

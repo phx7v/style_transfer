@@ -21,3 +21,18 @@ def preprocess_image_onnx(img: Image.Image) -> np.ndarray:
         x = np.pad(x, ((0, 0), (0, 0), (0, pad_h), (0, pad_w)), mode='reflect')
 
     return x
+
+
+def resize_to_max_pixels(img: Image.Image, max_pixels: int) -> Image.Image:
+    w, h = img.size
+    pixels = w * h
+
+    if pixels <= max_pixels:
+        return img
+
+    scale = (max_pixels / pixels) ** 0.5
+
+    new_w = max(1, int(w * scale))
+    new_h = max(1, int(h * scale))
+
+    return img.resize((new_w, new_h), Image.BICUBIC)

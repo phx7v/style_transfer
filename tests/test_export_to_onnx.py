@@ -1,4 +1,3 @@
-import torch
 import numpy as np
 import onnx
 import onnxruntime as ort
@@ -7,19 +6,6 @@ import pytest
 from tools.export_to_onnx import export_to_onnx
 from tools.model_loader import load_model
 
-from style_transfer.models.model import TransformNet
-
-
-@pytest.fixture
-def tmp_onnx_path(tmp_path):
-    return tmp_path / 'transformnet.onnx'
-
-@pytest.fixture
-def dummy_weights(tmp_path):
-    dummy_weights = tmp_path / 'w.pt'
-    model = TransformNet()
-    torch.save(model.state_dict(), dummy_weights)
-    return dummy_weights
 
 def test_export_creates_file(dummy_onnx_path, dummy_weights):
     export_to_onnx(load_model, dummy_weights, str(dummy_onnx_path))
