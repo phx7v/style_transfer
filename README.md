@@ -1,7 +1,9 @@
-# Van Gogh Style Transfer Streamlit App
+# Style Transfer Streamlit App
 
 A web application built with **Streamlit** that performs image style transfer.  
 The project is fully containerized with **Docker** and supports separate **development** and **production** environments.
+
+There are a few styles available and you can easily add your own styles.
 
 ---
 

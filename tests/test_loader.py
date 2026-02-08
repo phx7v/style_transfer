@@ -1,7 +1,7 @@
 import torch
 
 from style_transfer.tools.model_loader import load_model
-from style_transfer.models.model import TransformNet
+from style_transfer.models.transform_net import TransformNet
 
 
 def test_load_model_sets_eval(tmp_path):
