@@ -3,7 +3,7 @@ import torch
 from pathlib import Path
 from PIL import Image
 
-from style_transfer.models.model import TransformNet
+from style_transfer.models.transform_net import TransformNet
 
 
 @pytest.fixture

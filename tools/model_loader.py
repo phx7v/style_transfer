@@ -1,6 +1,6 @@
 import torch
 
-from models.model import TransformNet
+from models.transform_net import TransformNet
 
 
 def load_model(weights_path: str, device: torch.device) -> torch.nn.Module:

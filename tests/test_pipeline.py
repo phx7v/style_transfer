@@ -2,7 +2,7 @@ import torch
 import onnx
 import onnxruntime as ort
 import numpy as np
-from style_transfer.models.model import TransformNet
+from style_transfer.models.transform_net import TransformNet
 from style_transfer.inference.postprocessing import numpy_to_pil
 from style_transfer.inference.preprocessing import preprocess_image_onnx
 
